@@ -5,6 +5,7 @@ using TMPro;
 
 public class Type : MonoBehaviour
 {
+    public bool isTyping = false;
     public TextMeshProUGUI wordOutput = null;
     public List<string> wordWhitelist = new List<string>();
 
@@ -16,31 +17,47 @@ public class Type : MonoBehaviour
 
     void Update()
     {
-        if (Input.anyKeyDown)
+        if (isTyping)
         {
-            string keysDown = Input.inputString;
-
-            if (keysDown.Length == 1)
+            if (Input.anyKeyDown)
             {
-                EnterInput(keysDown);
+                string keysDown = Input.inputString;
+
+                if (keysDown.Length == 1)
+                {
+                    EnterInput(keysDown);
+                }
+            }
+
+            if (Input.GetKeyDown("return"))
+            {
+                CheckOutput();
+                ClearOutput();
             }
         }
-        
-        if (Input.GetKeyDown("return"))
-        {
-            CheckOutput();
-        }
+    }
+
+    public void StartTyping()
+    {
+        isTyping = true;
+    }
+
+    public void StopTyping()
+    {
+        ClearOutput();
+
+        isTyping = false;
+    }
+
+    public void ClearOutput()
+    {
+        wordOutput.text = "";
     }
 
     private void SetWhitelist()
     {
         wordWhitelist.Add("Test");
         wordWhitelist.Add("24/07");
-    }
-
-    private void ClearOutput()
-    {
-        wordOutput.text = "";
     }
 
     private void EnterInput(string typedLetter)
@@ -58,7 +75,7 @@ public class Type : MonoBehaviour
         {
             if (output.Contains(word))
             {
-                ClearOutput();
+                Debug.Log("successful search!"); // Add functionality here.
             }
         }
     }
