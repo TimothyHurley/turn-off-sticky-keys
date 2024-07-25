@@ -9,15 +9,19 @@ public class Click : MonoBehaviour
     public bool isDoubleClicked = false;
     public Button file = null;
     public GameObject typeScript = null;
+    public GameObject popUp = null;
+    public int timerInterval = 400;
     private Timer mouseClickTimer = new Timer();
     private Timer mouseDoubleClickTimer = new Timer();
 
     void Start()
     {
-        mouseClickTimer.Interval = 400;
+        popUp.SetActive(false);
+
+        mouseClickTimer.Interval = timerInterval;
         mouseClickTimer.Elapsed += SingleClick;
 
-        mouseDoubleClickTimer.Interval = 400;
+        mouseDoubleClickTimer.Interval = timerInterval;
         mouseDoubleClickTimer.Elapsed += DoubleClick;
     }
 
@@ -49,9 +53,11 @@ public class Click : MonoBehaviour
 
                 Debug.Log("double click"); // Add functionality here.
 
-                isDoubleClicked = true;
+                popUp.SetActive(true);
 
-                mouseDoubleClickTimer.Start();
+                //isDoubleClicked = true;
+
+                //mouseDoubleClickTimer.Start();
             }
         }
     }

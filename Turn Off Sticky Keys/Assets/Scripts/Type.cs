@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 using TMPro;
 
@@ -7,33 +8,54 @@ public class Type : MonoBehaviour
 {
     public bool isTyping = false;
     public TextMeshProUGUI wordOutput = null;
+    private string currentLetter = string.Empty;
     public List<string> wordWhitelist = new List<string>();
+    public GameObject clickScript = null;
+    public GameObject popUp = null;
+    private Timer keyPressTimer = new Timer();
 
     void Start()
     {
         SetWhitelist();
         ClearOutput();
+
+        keyPressTimer.Interval = clickScript.GetComponent<Click>().timerInterval;
+        keyPressTimer.Elapsed += SinglePress;
     }
 
     void Update()
     {
-        if (isTyping)
+        if (Input.anyKeyDown)
         {
-            if (Input.anyKeyDown)
+            if (Input.inputString != string.Empty)
             {
                 string keysDown = Input.inputString;
 
-                if (keysDown.Length == 1)
+                if (keysDown == currentLetter)
                 {
-                    EnterInput(keysDown);
+                    popUp.SetActive(true);
+
+                    ClearOutput();
+                }
+
+                else
+                {
+                    if (isTyping)
+                    {
+                        EnterInput(keysDown);
+                    }
+
+                    currentLetter = keysDown;
+
+                    keyPressTimer.Start();
                 }
             }
+        }
 
-            if (Input.GetKeyDown("return"))
-            {
-                CheckOutput();
-                ClearOutput();
-            }
+        if (Input.GetKeyDown("return"))
+        {
+            CheckOutput();
+            ClearOutput();
         }
     }
 
@@ -51,7 +73,7 @@ public class Type : MonoBehaviour
 
     public void ClearOutput()
     {
-        wordOutput.text = "";
+        wordOutput.text = string.Empty;
     }
 
     private void SetWhitelist()
@@ -78,5 +100,12 @@ public class Type : MonoBehaviour
                 Debug.Log("successful search!"); // Add functionality here.
             }
         }
+    }
+
+    void SinglePress(object obj, System.EventArgs arg)
+    {
+        keyPressTimer.Stop();
+
+        currentLetter = string.Empty;
     }
 }
