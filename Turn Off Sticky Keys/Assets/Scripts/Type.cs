@@ -11,7 +11,7 @@ public class Type : MonoBehaviour
     private string currentLetter = string.Empty;
     public List<string> wordWhitelist = new List<string>();
     public GameObject clickScript = null;
-    public GameObject popUp = null;
+    //public GameObject popUp = null;
     private Timer keyPressTimer = new Timer();
 
     void Start()
@@ -33,7 +33,7 @@ public class Type : MonoBehaviour
 
                 if (keysDown == currentLetter)
                 {
-                    popUp.SetActive(true);
+                    //popUp.SetActive(true);
 
                     ClearOutput();
                 }

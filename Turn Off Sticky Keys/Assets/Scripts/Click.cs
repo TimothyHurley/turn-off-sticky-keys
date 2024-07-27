@@ -7,16 +7,17 @@ using UnityEngine.UI;
 public class Click : MonoBehaviour
 {
     public bool isDoubleClicked = false;
-    public Button file = null;
+    //public Button file = null;
+    public GameObject[] files = null;
     public GameObject typeScript = null;
-    public GameObject popUp = null;
+    //public GameObject popUp = null;
     public int timerInterval = 400;
     private Timer mouseClickTimer = new Timer();
     private Timer mouseDoubleClickTimer = new Timer();
 
     void Start()
     {
-        popUp.SetActive(false);
+        //popUp.SetActive(false);
 
         mouseClickTimer.Interval = timerInterval;
         mouseClickTimer.Elapsed += SingleClick;
@@ -29,7 +30,13 @@ public class Click : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            file.GetComponent<File>().HideHighlight();
+            foreach (var file in files)
+            {
+                if (!file.GetComponent<File>().isButtonHeld)
+                {
+                    file.GetComponent<File>().HideHighlight();
+                }
+            }
 
             if (typeScript.GetComponent<Type>().isTyping)
             {
@@ -53,11 +60,11 @@ public class Click : MonoBehaviour
 
                 Debug.Log("double click"); // Add functionality here.
 
-                popUp.SetActive(true);
+                //popUp.SetActive(true);
 
-                //isDoubleClicked = true;
+                isDoubleClicked = true;
 
-                //mouseDoubleClickTimer.Start();
+                mouseDoubleClickTimer.Start();
             }
         }
     }
