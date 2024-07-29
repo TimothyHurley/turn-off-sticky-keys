@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class PopUp : MonoBehaviour
 {
-    public GameObject popUpContents = null;
-
-    void Start()
-    {
-        popUpContents = this.gameObject;
-
-        popUpContents.SetActive(false);
-    }
+    public GameObject popUpContents = null; // Set in inspector.
 
     public void OpenPopUp()
     {
