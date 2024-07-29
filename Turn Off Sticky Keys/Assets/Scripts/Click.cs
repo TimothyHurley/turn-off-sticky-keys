@@ -38,11 +38,6 @@ public class Click : MonoBehaviour
                 }
             }
 
-            if (typeScript.GetComponent<Type>().isTyping)
-            {
-                typeScript.GetComponent<Type>().isTyping = false;
-            }
-
             if (mouseClickTimer.Enabled == false)
             {
                 mouseClickTimer.Start();

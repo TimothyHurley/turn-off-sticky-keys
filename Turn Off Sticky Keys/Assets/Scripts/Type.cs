@@ -1,62 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Type : MonoBehaviour
 {
-    public bool isTyping = false;
-    public TextMeshProUGUI wordOutput = null;
-    private string currentLetter = string.Empty;
-    public List<string> wordWhitelist = new List<string>();
-    public GameObject clickScript = null;
-    //public GameObject popUp = null;
-    private Timer keyPressTimer = new Timer();
+    public TextMeshProUGUI pinText = null; // Set in inspector;
+    public TMP_InputField pinInputField = null; // Set in inspector.
+
+    public bool isTyping = false; // Set in void Start().
+    public string pin = "1984"; // Set in void Start().
+
+    // LoadScene("name") set in void CheckOutput().
 
     void Start()
     {
-        SetWhitelist();
-        ClearOutput();
+        isTyping = false;
+        pin = "1984";
 
-        keyPressTimer.Interval = clickScript.GetComponent<Click>().timerInterval;
-        keyPressTimer.Elapsed += SinglePress;
-    }
-
-    void Update()
-    {
-        if (Input.anyKeyDown)
-        {
-            if (Input.inputString != string.Empty)
-            {
-                string keysDown = Input.inputString;
-
-                if (keysDown == currentLetter)
-                {
-                    //popUp.SetActive(true);
-
-                    ClearOutput();
-                }
-
-                else
-                {
-                    if (isTyping)
-                    {
-                        EnterInput(keysDown);
-                    }
-
-                    currentLetter = keysDown;
-
-                    keyPressTimer.Start();
-                }
-            }
-        }
-
-        if (Input.GetKeyDown("return"))
-        {
-            CheckOutput();
-            ClearOutput();
-        }
+        pinText.text = pin;
     }
 
     public void StartTyping()
@@ -66,46 +29,26 @@ public class Type : MonoBehaviour
 
     public void StopTyping()
     {
-        ClearOutput();
-
         isTyping = false;
+    }
+
+    public void CheckOutput()
+    {
+        if (pinInputField.text == pin)
+        {
+            SceneManager.LoadScene("DesktopScene"); // Scene name.
+        }
+
+        else
+        {
+            // Add functionality here.
+        }
+
+        ClearOutput();
     }
 
     public void ClearOutput()
     {
-        wordOutput.text = string.Empty;
-    }
-
-    private void SetWhitelist()
-    {
-        wordWhitelist.Add("Test");
-        wordWhitelist.Add("24/07");
-    }
-
-    private void EnterInput(string typedLetter)
-    {
-        string typedLetters = wordOutput.text + typedLetter;
-
-        wordOutput.text = typedLetters;
-    }
-
-    private void CheckOutput()
-    {
-        string output = wordOutput.text;
-        
-        foreach (string word in wordWhitelist)
-        {
-            if (output.Contains(word))
-            {
-                Debug.Log("successful search!"); // Add functionality here.
-            }
-        }
-    }
-
-    void SinglePress(object obj, System.EventArgs arg)
-    {
-        keyPressTimer.Stop();
-
-        currentLetter = string.Empty;
+        pinInputField.text = string.Empty;
     }
 }
