@@ -36,7 +36,7 @@ public class Type : MonoBehaviour
     {
         if (pinInputField.text == pin)
         {
-            SceneManager.LoadScene("DesktopScene"); // Scene name.
+            SceneManager.LoadScene("HomeScene"); // Scene name.
         }
 
         else
